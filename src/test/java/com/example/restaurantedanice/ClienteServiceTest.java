@@ -6,7 +6,7 @@ import com.example.restaurantedanice.domain.cliente.dtos.CadastroClienteDTO;
 import com.example.restaurantedanice.domain.cliente.dtos.DetalhamentoClienteDTO;
 import com.example.restaurantedanice.service.ClienteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -31,19 +28,14 @@ class ClienteServiceTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ClienteController clienteController;
-
     @MockBean
     private ClienteService clienteService;
-
-    @Autowired
-    private MockMvc mvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("Inserindo dados do cliente corretamente")
     public void aoCadastrarComDadosCorretosDeveRetornarDetalhamentoClienteDTO() throws Exception {
 
         CadastroClienteDTO cadastroClienteDTO = new CadastroClienteDTO("Kauã", "kaua@test.com", "71999884455", "");
@@ -80,6 +72,7 @@ class ClienteServiceTest {
 
 
     @Test
+    @DisplayName("Inserindo dados do cliente incorretamente")
     void aoCadastrarComDadosFaltantesDeveRetornarStatusBadRequest() throws Exception {
         // Dados com campos em branco
         CadastroClienteDTO dados = new CadastroClienteDTO(
@@ -89,7 +82,7 @@ class ClienteServiceTest {
                 "123.456.789-10"
         );
 
-        mvc.perform(post("/clientes")
+        mockMvc.perform(post("/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dados))
                 )
