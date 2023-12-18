@@ -4,7 +4,13 @@ document.getElementById('formulario').addEventListener('submit', function (event
     const nome = document.getElementById('nome').value;
     const email = document.getElementById('email').value;
     const telefone = document.getElementById('telefone').value;
-    const cpf = document.getElementById('cpf').value;
+    let cpf = document.getElementById('cpf').value;
+
+    // Remove caracteres não numéricos do CPF
+    cpf = cpf.replace(/\D/g, '');
+
+    // Aplica a máscara ao CPF
+    $('#cpf').inputmask('999.999.999-99');
 
     const cliente = {
         nome: nome,
